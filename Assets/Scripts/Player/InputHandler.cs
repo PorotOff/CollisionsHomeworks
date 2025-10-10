@@ -9,9 +9,6 @@ public class InputHandler : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(_explodeInputIndex))
-        {
             OnExploding?.Invoke();
-            Debug.Log("OnExploding");
-        }
     }
 }

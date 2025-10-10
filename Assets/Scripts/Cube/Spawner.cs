@@ -1,12 +1,10 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ExplodeableCube))]
 public class Spawner : MonoBehaviour
 {
-    private ExplodeableCube _explodeableCube;
+    [SerializeField] private Exploder _exploder;
 
     [SerializeField] private GameObject _spawnablePrefab;
-    [SerializeField] private MeshRenderer _spawnableMeshRenderer;
     [SerializeField] private int _spawnableScaleDivider = 2;
 
     [SerializeField, Range(1f, 10f)] private int _minSpawnCount = 2;
@@ -22,42 +20,38 @@ public class Spawner : MonoBehaviour
     }
 
     private void Awake()
-    {
-        _explodeableCube = GetComponent<ExplodeableCube>();
-        _spawnChance = _maxSpawnChance;
-    }
+        => _spawnChance = _maxSpawnChance;
+
+    private void Start()
+        => PrintSpawnChance();
 
     private void OnEnable()
-    {
-        _explodeableCube.Exploded += Spawn;
-    }
+        => _exploder.OnExploded += Spawn;
 
     private void OnDisable()
-    {
-        _explodeableCube.Exploded -= Spawn;
-    }
+        => _exploder.OnExploded -= Spawn;
 
-    private void Spawn()
+    private void Spawn(ExplodeableCube explodeable)
     {
-        if (Random.Range(0, _maxSpawnChance) < _spawnChance)
+        if (Random.Range(0, _maxSpawnChance) <= _spawnChance)
         {
             int spawnablesCount = Random.Range(_minSpawnCount, _maxSpawnCount);
 
             for (int i = 0; i < spawnablesCount; i++)
             {
-                Vector3 spawnablePosition = transform.position;
+                Vector3 spawnablePosition = explodeable.transform.position;
                 Quaternion spawnableRotation = Quaternion.identity;
-                Vector3 spawnableScale = transform.localScale / _spawnableScaleDivider;
-                Color spawnableColor = Random.ColorHSV();
+                Vector3 spawnableScale = explodeable.transform.localScale / _spawnableScaleDivider;
 
-                _spawnablePrefab.transform.localScale = spawnableScale;
-                _spawnableMeshRenderer.material.color = spawnableColor;
-                Instantiate(_spawnablePrefab, spawnablePosition, spawnableRotation);
-
-                _spawnChance /= _spawnChanceDivider;
-
-                Debug.Log("New spawnable spawned");
+                GameObject spawnable = Instantiate(_spawnablePrefab, spawnablePosition, spawnableRotation);
+                spawnable.transform.localScale = spawnableScale;
             }
+
+            _spawnChance /= _spawnChanceDivider;
+            PrintSpawnChance();
         }
     }
+    
+    private void PrintSpawnChance()
+        => Debug.Log($"Spawn chance = {_spawnChance}");
 }
