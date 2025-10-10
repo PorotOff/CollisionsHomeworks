@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Exploder _exploder;
+    [SerializeField] private Detonator _detonator;
 
-    [SerializeField] private GameObject _spawnablePrefab;
+    [SerializeField] private ExplodeableCube _spawnablePrefab;
+    [SerializeField] private Transform _spawnablesContainer;
     [SerializeField] private int _spawnableScaleDivider = 2;
 
     [SerializeField, Range(1f, 10f)] private int _minSpawnCount = 2;
@@ -26,10 +27,10 @@ public class Spawner : MonoBehaviour
         => PrintSpawnChance();
 
     private void OnEnable()
-        => _exploder.OnExploded += Spawn;
+        => _detonator.OnExploded += Spawn;
 
     private void OnDisable()
-        => _exploder.OnExploded -= Spawn;
+        => _detonator.OnExploded -= Spawn;
 
     private void Spawn(ExplodeableCube explodeable)
     {
@@ -42,9 +43,12 @@ public class Spawner : MonoBehaviour
                 Vector3 spawnablePosition = explodeable.transform.position;
                 Quaternion spawnableRotation = Quaternion.identity;
                 Vector3 spawnableScale = explodeable.transform.localScale / _spawnableScaleDivider;
+                Color spawnableColor = Random.ColorHSV();
 
-                GameObject spawnable = Instantiate(_spawnablePrefab, spawnablePosition, spawnableRotation);
+                ExplodeableCube spawnable = Instantiate(_spawnablePrefab, spawnablePosition, spawnableRotation, _spawnablesContainer);
                 spawnable.transform.localScale = spawnableScale;
+                spawnable.ChangeColor(spawnableColor);
+                spawnable.TakeExplosion(transform.position);
             }
 
             _spawnChance /= _spawnChanceDivider;

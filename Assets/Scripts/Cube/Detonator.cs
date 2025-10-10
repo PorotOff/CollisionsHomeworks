@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 
-public class Exploder : MonoBehaviour
+public class Detonator : MonoBehaviour
 {
     [SerializeField] private ExplodableDetector _explodeableDetector;
+
     public event Action<ExplodeableCube> OnExploded;
 
     private void OnEnable()
@@ -15,6 +16,6 @@ public class Exploder : MonoBehaviour
     private void Explode(ExplodeableCube explodeable)
     {
         explodeable.Explode();
-        OnExploded?.Invoke(explodeable);
+        OnExploded?.Invoke(explodeable);        
     }
 }
