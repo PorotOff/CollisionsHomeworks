@@ -1,21 +1,26 @@
-using System;
 using UnityEngine;
 
 public class Detonator : MonoBehaviour
 {
     [SerializeField] private ExplodableDetector _explodeableDetector;
-
-    public event Action<ExplodeableCube> OnExploded;
+    [SerializeField] private Spawner _spawner;
+    [SerializeField] private Exploder _exploder;
 
     private void OnEnable()
-        => _explodeableDetector.OnExplodeableDetected += Explode;
+    {
+        _explodeableDetector.OnExplodeableDetected += Detonate;
+        _spawner.NotSpawned += _exploder.Explode;
+    }
 
     private void OnDisable()
-        => _explodeableDetector.OnExplodeableDetected -= Explode;
-
-    private void Explode(ExplodeableCube explodeable)
     {
+        _explodeableDetector.OnExplodeableDetected -= Detonate;
+        _spawner.NotSpawned -= _exploder.Explode;
+    }
+
+    private void Detonate(ExplodeableCube explodeable)
+    {
+        _spawner.Spawn(explodeable);
         explodeable.Explode();
-        OnExploded?.Invoke(explodeable);        
     }
 }

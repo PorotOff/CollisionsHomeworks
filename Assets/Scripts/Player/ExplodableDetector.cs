@@ -4,11 +4,10 @@ using UnityEngine;
 public class ExplodableDetector : MonoBehaviour
 {
     [SerializeField] private InputHandler _inputHandler;
-
     [SerializeField] private Camera _camera;
-    private Ray _ray;
     [SerializeField] private float _rayLength = 100f;
 
+    private Ray _ray;
     public event Action<ExplodeableCube> OnExplodeableDetected;
 
     private void OnEnable()
@@ -22,7 +21,7 @@ public class ExplodableDetector : MonoBehaviour
         _ray = _camera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(_ray, out RaycastHit hit, _rayLength))
-            if (hit.collider.gameObject.TryGetComponent(out ExplodeableCube explodeable))
+            if (hit.collider.TryGetComponent(out ExplodeableCube explodeable))
                 OnExplodeableDetected?.Invoke(explodeable);
     }
 }
