@@ -486,7 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa583c1fac063d4a895de3de6a39180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnablePrefab: {fileID: 6477235666557451962, guid: 80c357738302dea47a6cad66e19cee27, type: 3}
+  _explodableDetector: {fileID: 933987441}
+  _exploder: {fileID: 933987442}
   _spawnablesContainer: {fileID: 1958424572}
   _spawnableScaleDivider: 2
   _splitChanceDivider: 2
@@ -533,7 +534,6 @@ GameObject:
   m_Component:
   - component: {fileID: 933987439}
   - component: {fileID: 933987441}
-  - component: {fileID: 933987440}
   - component: {fileID: 933987442}
   m_Layer: 0
   m_Name: ExplodingSystem
@@ -557,21 +557,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 382920552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &933987440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 933987438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 631f1b5b65ced2841b438a9bc5330621, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _explodeableDetector: {fileID: 933987441}
-  _spawner: {fileID: 889448151}
-  _exploder: {fileID: 933987442}
 --- !u!114 &933987441
 MonoBehaviour:
   m_ObjectHideFlags: 0
