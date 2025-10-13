@@ -486,13 +486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa583c1fac063d4a895de3de6a39180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detonator: {fileID: 933987440}
   _spawnablePrefab: {fileID: 6477235666557451962, guid: 80c357738302dea47a6cad66e19cee27, type: 3}
   _spawnablesContainer: {fileID: 1958424572}
   _spawnableScaleDivider: 2
+  _splitChanceDivider: 2
   _minSpawnCount: 2
   _maxSpawnCount: 6
-  _spawnChanceDivider: 2
 --- !u!1 &900896611
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +570,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explodeableDetector: {fileID: 933987441}
+  _spawner: {fileID: 889448151}
+  _exploder: {fileID: 933987442}
 --- !u!114 &933987441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,7 +599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 183b04dcf9a29b843be4d73ee42698c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 889448151}
   _explosionRadius: 100
   _explosionForce: 1000
 --- !u!1 &963194225

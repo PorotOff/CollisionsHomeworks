@@ -8,13 +8,13 @@ public class ExplodableDetector : MonoBehaviour
     [SerializeField] private float _rayLength = 100f;
 
     private Ray _ray;
-    public event Action<ExplodeableCube> OnExplodeableDetected;
+    public event Action<ExplodeableCube> ExplodeableDetected;
 
     private void OnEnable()
-        => _inputHandler.OnExploding += Detect;
+        => _inputHandler.Exploding += Detect;
 
     private void OnDisable()
-        => _inputHandler.OnExploding -= Detect;
+        => _inputHandler.Exploding -= Detect;
 
     private void Detect()
     {
@@ -22,6 +22,6 @@ public class ExplodableDetector : MonoBehaviour
 
         if (Physics.Raycast(_ray, out RaycastHit hit, _rayLength))
             if (hit.collider.TryGetComponent(out ExplodeableCube explodeable))
-                OnExplodeableDetected?.Invoke(explodeable);
+                ExplodeableDetected?.Invoke(explodeable);
     }
 }

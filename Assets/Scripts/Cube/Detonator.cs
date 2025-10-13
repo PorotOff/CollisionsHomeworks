@@ -8,19 +8,16 @@ public class Detonator : MonoBehaviour
 
     private void OnEnable()
     {
-        _explodeableDetector.OnExplodeableDetected += Detonate;
+        _explodeableDetector.ExplodeableDetected += Detonate;
         _spawner.NotSpawned += _exploder.Explode;
     }
 
     private void OnDisable()
     {
-        _explodeableDetector.OnExplodeableDetected -= Detonate;
+        _explodeableDetector.ExplodeableDetected -= Detonate;
         _spawner.NotSpawned -= _exploder.Explode;
     }
 
     private void Detonate(ExplodeableCube explodeable)
-    {
-        _spawner.Spawn(explodeable);
-        explodeable.Explode();
-    }
+        => _spawner.Spawn(explodeable);
 }

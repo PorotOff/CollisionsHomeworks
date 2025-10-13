@@ -11,6 +11,6 @@ public class Exploder : MonoBehaviour
 
         foreach (var hit in hits)
             if (hit.attachedRigidbody != null)
-                hit.attachedRigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+                hit.attachedRigidbody.AddExplosionForce(_explosionForce, hit.transform.position, _explosionRadius);
     }
 }

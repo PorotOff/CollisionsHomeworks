@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -8,28 +7,23 @@ public class ExplodeableCube : MonoBehaviour
 
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
-    [SerializeField] private int _splitChanceDivider = 2;
 
     private float _maxSplitChance = 100f;
-    private float _splitChance;
+    
+    public float SplitChance { get; private set; }
 
-    public event Action<ExplodeableCube> Exploded;
-
-    private void Awake()
+    public void Initialize(float splitChance)
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _splitChance = _maxSplitChance;
+        SplitChance = splitChance;
     }
 
-    private void Start()
-        => _rigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+    private void Awake()
+        => SplitChance = _maxSplitChance;
 
     public bool CanSplit()
-        => UnityEngine.Random.Range(0, _maxSplitChance) <= _splitChance;
+        => Random.Range(0, _maxSplitChance) <= SplitChance;
 
-    public void DivideSplitChance()
-        => _splitChance /= _splitChanceDivider;
-
-    public void Explode()
-        => Exploded?.Invoke(this);
+    public void TakeExplosion(Vector3 explosionPoint)
+        => _rigidbody.AddExplosionForce(_explosionForce, explosionPoint, _explosionRadius);
 }
