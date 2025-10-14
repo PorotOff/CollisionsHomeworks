@@ -1,19 +1,17 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ExplodableCube : MonoBehaviour
 {
     private float _maxSplitChance = 100f;
+    
+    public float SplitChance { get; private set; }
 
-    [field: SerializeField] public float ExplosionRadius { get; private set; } = 10f;
-    [field: SerializeField] public float ExplosionForce { get; private set; } = 1000f;
-    public float SplitChance { get; private set; } = 100f;
+    public void Initialize(float splitChance)
+        => SplitChance = splitChance;
 
-    public void Initialize(float splitChance, float explosionRadius, float explosionForce)
-    {
-        SplitChance = splitChance;
-        ExplosionRadius = explosionRadius;
-        ExplosionForce = explosionForce;
-    }
+    private void Awake()
+        => SplitChance = _maxSplitChance;
 
     public bool CanSplit()
         => Random.Range(0, _maxSplitChance) <= SplitChance;
