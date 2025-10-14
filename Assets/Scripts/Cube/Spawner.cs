@@ -6,10 +6,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private ExplodableDetector _explodableDetector;
     [SerializeField] private Exploder _exploder;
     [SerializeField] private Transform _spawnablesContainer;
-    [SerializeField] private int _spawnableScaleDivider = 2;
-    [SerializeField] private int _splitChanceDivider = 2;
     [SerializeField, Range(1f, 10f)] private int _minSpawnCount = 2;
     [SerializeField, Range(1f, 10f)] private int _maxSpawnCount = 6;
+    [SerializeField] private float _spawnableScaleDivider = 2f;
+    [SerializeField] private float _splitChanceDivider = 2f;
+    [SerializeField] private float _explosionRadiusMultiplier = 1.4f;
+    [SerializeField] private float _explosionForceMultiplier = 1.4f;
 
     private void OnValidate()
     {
@@ -33,6 +35,14 @@ public class Spawner : MonoBehaviour
                 if (spawnedExplodable.TryGetComponent(out Rigidbody rigidbody))
                     _exploder.Explode(rigidbody);
         }
+        else
+        {
+            Vector3 explosionPosition = explodable.transform.position;
+            float explosionRadius = explodable.ExplosionRadius * _explosionRadiusMultiplier;
+            float explosionForce = explodable.ExplosionForce * _explosionForceMultiplier;
+
+            _exploder.Explode(explosionPosition, explosionRadius, explosionForce);
+        }
 
         Destroy(explodable.gameObject);
     }
@@ -49,9 +59,11 @@ public class Spawner : MonoBehaviour
             Quaternion spawnableRotation = Quaternion.identity;
             Vector3 spawnableScale = explodable.transform.localScale / _spawnableScaleDivider;
             float splitChance = explodable.SplitChance / _splitChanceDivider;
+            float explosionRadius = explodable.ExplosionRadius * _explosionRadiusMultiplier;
+            float explosionForce = explodable.ExplosionForce * _explosionForceMultiplier;
 
             ExplodableCube spawnable = Instantiate(explodable, spawnablePosition, spawnableRotation, _spawnablesContainer);
-            spawnable.Initialize(splitChance);
+            spawnable.Initialize(splitChance, explosionRadius, explosionForce);
             spawnable.transform.localScale = spawnableScale;
 
             explodables.Add(spawnable);
